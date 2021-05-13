@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ALL_WAIFUS } from './data';
 import { Header } from './Header';
+import { LoadingContent } from './LoadingContent';
 import { ResetButton } from './ResetButton';
 import { shuffle } from './util/arrayHelper';
 import { WaifuImage } from './WaifuImage';
@@ -32,23 +33,25 @@ export const MainPage = () => {
       return;
     }
 
-    const storageWaifus = window.localStorage.getItem(WAIFUS_KEY);
-    if (storageWaifus != null) {
-      const newWaifus = storageWaifus.split(DELIMITER);
-      setWaifus(newWaifus);
+    new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+      const storageWaifus = window.localStorage.getItem(WAIFUS_KEY);
+      if (storageWaifus != null) {
+        const newWaifus = storageWaifus.split(DELIMITER);
+        setWaifus(newWaifus);
 
-      if (newWaifus.length === 1) {
-        setInitialLength(1);
-      } else if (newWaifus.length <= 8) {
-        setInitialLength(8);
-      } else if (newWaifus.length <= 16) {
-        setInitialLength(16);
-      } else {
-        setInitialLength(32);
+        if (newWaifus.length === 1) {
+          setInitialLength(1);
+        } else if (newWaifus.length <= 8) {
+          setInitialLength(8);
+        } else if (newWaifus.length <= 16) {
+          setInitialLength(16);
+        } else {
+          setInitialLength(32);
+        }
       }
-    }
 
-    setHasLoaded(true);
+      setHasLoaded(true);
+    });
   });
 
   useEffect(() => {
@@ -85,6 +88,10 @@ export const MainPage = () => {
     setHasLoaded(false);
     window.localStorage.removeItem(WAIFUS_KEY);
   };
+
+  if (!hasLoaded) {
+    return <LoadingContent />;
+  }
 
   return (
     <div>
