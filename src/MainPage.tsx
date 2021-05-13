@@ -1,10 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+
 import { ALL_WAIFUS } from './data';
 import { Header } from './Header';
+import { ResetButton } from './ResetButton';
 import { shuffle } from './util/arrayHelper';
+import { WaifuImage } from './WaifuImage';
 
 const WAIFUS_KEY = 'waifus';
 const DELIMITER = ';';
+
+const StyledImageWrapper = styled.div`
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  justify-content: space-between;
+`;
 
 export const MainPage = () => {
   const [waifus, setWaifus] = useState(ALL_WAIFUS);
@@ -68,14 +79,12 @@ export const MainPage = () => {
       {waifus.length == 1 ? (
         <img src={waifus[0]} width="600px" height="1000px"></img>
       ) : (
-        <>
-          <img src={waifus[0]} onClick={() => onWaifuClick(true)} width="300px" height="500px"></img>
-          <img src={waifus[1]} onClick={() => onWaifuClick(false)} width="300px" height="500px"></img>
-        </>
+        <StyledImageWrapper>
+          <WaifuImage src={waifus[0]} onWaifuClick={onWaifuClick} isFirstWaifu={true} />
+          <WaifuImage src={waifus[1]} onWaifuClick={onWaifuClick} isFirstWaifu={false} />
+        </StyledImageWrapper>
       )}
-      <button type="button" onClick={onReset}>
-        Reset
-      </button>
+      <ResetButton onClick={onReset} />
     </div>
   );
 };
