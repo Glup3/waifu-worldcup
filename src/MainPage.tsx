@@ -6,6 +6,7 @@ import { Header } from './Header';
 import { ResetButton } from './ResetButton';
 import { shuffle } from './util/arrayHelper';
 import { WaifuImage } from './WaifuImage';
+import { WinnerWaifu } from './WinnerWaifu';
 
 const WAIFUS_KEY = 'waifus';
 const DELIMITER = ';';
@@ -76,14 +77,16 @@ export const MainPage = () => {
   return (
     <div>
       <Header currentRound={round} rounds={initialLength / 2} />
-      {waifus.length == 1 ? (
-        <img src={waifus[0]} width="600px" height="1000px"></img>
-      ) : (
-        <StyledImageWrapper>
-          <WaifuImage src={waifus[0]} onWaifuClick={onWaifuClick} isFirstWaifu={true} />
-          <WaifuImage src={waifus[1]} onWaifuClick={onWaifuClick} isFirstWaifu={false} />
-        </StyledImageWrapper>
-      )}
+      <StyledImageWrapper>
+        {waifus.length == 1 ? (
+          <WinnerWaifu src={waifus[0]} />
+        ) : (
+          <>
+            <WaifuImage src={waifus[0]} onWaifuClick={onWaifuClick} isFirstWaifu={true} />
+            <WaifuImage src={waifus[1]} onWaifuClick={onWaifuClick} isFirstWaifu={false} />
+          </>
+        )}
+      </StyledImageWrapper>
       <ResetButton onClick={onReset} />
     </div>
   );
