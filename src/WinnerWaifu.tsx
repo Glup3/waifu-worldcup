@@ -3,8 +3,9 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
 const StyledImage = styled(motion.img)`
+  margin: 0 auto;
   height: 100%;
-  width: 100%;
+  object-fit: contain;
 `;
 
 interface WinnerWaifuProps {
