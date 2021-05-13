@@ -12,6 +12,7 @@ const StyledImage = styled(motion.img)`
   height: 100%;
   width: 49%;
   object-fit: fill;
+  cursor: pointer;
 `;
 
 export const WaifuImage: FunctionComponent<WaifuImageProps> = ({ src, onWaifuClick, isFirstWaifu }) => {

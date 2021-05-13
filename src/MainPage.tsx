@@ -11,8 +11,8 @@ const WAIFUS_KEY = 'waifus';
 const DELIMITER = ';';
 
 const StyledImageWrapper = styled.div`
-  height: 100vh;
-  max-height: 100vh;
+  height: calc(100vh - 20px);
+  max-height: calc(100vh - 20px);
   display: flex;
   justify-content: space-between;
 `;
