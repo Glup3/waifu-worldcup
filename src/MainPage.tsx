@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { ALL_WAIFUS } from './data';
@@ -24,6 +24,9 @@ export const MainPage = () => {
   const [hasLoaded, setHasLoaded] = useState(false);
   const [hasShuffled, setHasShuffled] = useState(false);
 
+  const round = useMemo(() => initialLength - waifus.length + 1, [initialLength, waifus]);
+  const rounds = useMemo(() => initialLength / 2, [initialLength]);
+
   useEffect(() => {
     if (hasLoaded) {
       return;
@@ -31,7 +34,18 @@ export const MainPage = () => {
 
     const storageWaifus = window.localStorage.getItem(WAIFUS_KEY);
     if (storageWaifus != null) {
-      setWaifus(storageWaifus.split(DELIMITER));
+      const newWaifus = storageWaifus.split(DELIMITER);
+      setWaifus(newWaifus);
+
+      if (newWaifus.length === 1) {
+        setInitialLength(1);
+      } else if (newWaifus.length <= 8) {
+        setInitialLength(8);
+      } else if (newWaifus.length <= 16) {
+        setInitialLength(16);
+      } else {
+        setInitialLength(32);
+      }
     }
 
     setHasLoaded(true);
@@ -59,7 +73,7 @@ export const MainPage = () => {
     }
     setWaifus((oldWaifus) => [...oldWaifus]);
     window.localStorage.setItem(WAIFUS_KEY, waifus.join(DELIMITER));
-    if (waifus.length == initialLength / 2) {
+    if (waifus.length == rounds) {
       setInitialLength(waifus.length);
       setHasShuffled(false);
     }
@@ -72,11 +86,9 @@ export const MainPage = () => {
     window.localStorage.removeItem(WAIFUS_KEY);
   };
 
-  const round = initialLength - waifus.length + 1;
-
   return (
     <div>
-      <Header currentRound={round} rounds={initialLength / 2} />
+      <Header currentRound={round} rounds={rounds} />
       <StyledImageWrapper>
         {waifus.length == 1 ? (
           <WinnerWaifu src={waifus[0]} />
